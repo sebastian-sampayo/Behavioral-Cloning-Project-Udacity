@@ -113,8 +113,11 @@ Here is a visualization of the architecture (note: visualizing the architecture 
 
 ### Analysis and augmentation of the training data
 To improve the driving behavior in these cases, I decided to analyse the training data at the input in order to find out the exact amount of examples for each different steering angle. For this, I made an histogram, as we can see in the following figure:
+
 ![Original data][analysis/original_data.png]
+
 I tried using left and right cameras for training, adjusting the steering angle according to NVIDIA paper, in order to obtain more turns in the training process. To achieve this, every time I read a line from the csv containing all the images paths during training, I decided randomly which camera to take with 34% chance of choosing the central camera, and 33% for each side camera. When choosing a side camera, the angle shift (let's call it LR_shift_angle) to adjust the original steering angle was a parameter to tune, but I will talk about that later. The resulting histogram can be seen in the next figure:
+
 ![Side cameras][analysis/LR_34_8036.png]
 
 We can think of the original data histogram as a delta in the origin, because most of the images are from the car driving straight (steering angle = 0).
@@ -135,20 +138,26 @@ and
 - a uniform distribution with a range of "translation_range_angle"
 
 This is an addition of this 3 images:
+
 ![Center camera with random shifts][analysis/translation.png]
+
 ![Left camera with random shifts][analysis/translation_L.png]
+
 ![Right camera with random shifts][analysis/translation_R.png]
 
 This way we see that for the resulting distribution to be uniform, we need that half of the width between deltas (that is equal to LR_shift_angle/2) match with half of the uniform range (translation_range_angle/2 = max translation_shift_angle).
 
 For example, setting LR_shift_angle = 0.3 and translation_shift_angle = 0.15 we achieve a uniform distribution. However, in this case we are making turning images from left and right cameras into really aggressive steering angles, so the driving results is not smooth.
+
 ![LR_shift_angle = 0.3, max translation_shift_angle = 0.15][analysis/translation_LR_34_24108_0.3_0.15.png]
 
 Reducing both angles to LR_shift_angle = 0.25 and translation_shift_angle = 0.125, the driving result is smoother without loosing control.
+
 ![LR_shift_angle = 0.25, max translation_shift_angle = 0.125][analysis/translation_LR_34_8036_0.25_0.125.png]
 
 The drawback of this configuration is that the car is practically not able to make turns with steering angle larger than 0.25 + 0.125 = 0.375, because of the nature of the uniform distribution.
 In order to overcome this problem, I came up with the idea of generating these shifts with a normal gaussian distribution instead of a uniform, allowing a continuous distribution among large steering angle. I set the mean to 0 and the standard deviation = max translation_shift_angle desired. I decided to increase a little bit this last parameter to allow larger angles even more. I end up with LR_shift_angle = 0.25 and translation_shift_angle = 0.15. The resulting histogram is showed below:
+
 ![Gaussian translation][analysis/gauss_translation_LR_34_64288_0.25_0.15.png]
 
 Another improvement for data augmentation was to randomly flip half of the training images and invert the corresponding steering angle, equalizing the amount of left and right turns.
