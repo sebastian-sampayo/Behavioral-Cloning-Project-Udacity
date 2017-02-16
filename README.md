@@ -10,15 +10,11 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/placeholder.png "Model Visualization"
-[image2]: ./examples/placeholder.png "Grayscaling"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
-
 [original_data]: ./analysis/original_data.png
+[addition]: ./analysis/addition.png
+[LR0315]: ./analysis/translation_LR_34_24108_0.3_0.15.png
+[LR0250125]: ./analysis/translation_LR_34_8036_0.25_0.125.png
+[gauss025015]: ./analysis/gauss_translation_LR_34_64288_0.25_0.15.png
 
 
 ## Rubric Points
@@ -140,28 +136,24 @@ If we combine the side cameras with the translation shifts the result we obtain 
 and 
 - a uniform distribution with a range of "translation_range_angle"
 
-This is an addition of this 3 images:
+This is an addition of these 3 images:
 
-![Center camera with random shifts][analysis/translation.png]
-
-![Left camera with random shifts][analysis/translation_L.png]
-
-![Right camera with random shifts][analysis/translation_R.png]
+![Side cameras and random shift][addition]
 
 This way we see that for the resulting distribution to be uniform, we need that half of the width between deltas (that is equal to LR_shift_angle/2) match with half of the uniform range (translation_range_angle/2 = max translation_shift_angle).
 
-For example, setting LR_shift_angle = 0.3 and translation_shift_angle = 0.15 we achieve a uniform distribution. However, in this case we are making turning images from left and right cameras into really aggressive steering angles, so the driving results is not smooth.
+For example, setting LR_shift_angle = 0.3 and max translation_shift_angle = 0.15 we achieve a uniform distribution. However, in this case we are making turning images from left and right cameras into really aggressive steering angles, so the driving results is not smooth.
 
-![LR_shift_angle = 0.3, max translation_shift_angle = 0.15][analysis/translation_LR_34_24108_0.3_0.15.png]
+![LR_shift_angle = 0.3, max translation_shift_angle = 0.15][LR0315]
 
 Reducing both angles to LR_shift_angle = 0.25 and translation_shift_angle = 0.125, the driving result is smoother without loosing control.
 
-![LR_shift_angle = 0.25, max translation_shift_angle = 0.125][analysis/translation_LR_34_8036_0.25_0.125.png]
+![LR_shift_angle = 0.25, max translation_shift_angle = 0.125][LR0250125]
 
 The drawback of this configuration is that the car is practically not able to make turns with steering angle larger than 0.25 + 0.125 = 0.375, because of the nature of the uniform distribution.
 In order to overcome this problem, I came up with the idea of generating these shifts with a normal gaussian distribution instead of a uniform, allowing a continuous distribution among large steering angle. I set the mean to 0 and the standard deviation = max translation_shift_angle desired. I decided to increase a little bit this last parameter to allow larger angles even more. I end up with LR_shift_angle = 0.25 and translation_shift_angle = 0.15. The resulting histogram is showed below:
 
-![Gaussian translation][analysis/gauss_translation_LR_34_64288_0.25_0.15.png]
+![Gaussian translation][gauss025015]
 
 Another improvement for data augmentation was to randomly flip half of the training images and invert the corresponding steering angle, equalizing the amount of left and right turns.
 
@@ -171,12 +163,12 @@ For all this tweaks to take effect, I had to iterate the original data set sever
 
 
 
-!!
-The final step was to run the simulator to see how well the car was driving around track one. 
-The car drove well up to the second curve (the one after the bridge) where it crashed. I thought that this could happened because most time of the training was driving straight and only a few seconds of left and right turning.
 
-At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
-!!
+[//]: # The final step was to run the simulator to see how well the car was driving around track one. 
+[//]: # The car drove well up to the second curve (the one after the bridge) where it crashed. I thought that this could happened because most time of the training was driving straight and only a few seconds of left and right turning.
+
+[//]: # At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
+
 
 ### Creation of the Training Set & Training Process
 
