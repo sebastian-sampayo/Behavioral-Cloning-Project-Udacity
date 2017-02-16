@@ -140,7 +140,7 @@ A good way to accomplish this is easily found on the internet, and consists on a
 https://chatbotslife.com/using-augmentation-to-mimic-human-driving-496b569760a9#.afvzh0wrx
 apply a uniformly distributed random translation, with a range of 0.4, so the maximum shift in the steering angle was of 0.2. This is another parameter to tune, let's call it translation_range_angle. The result of using this to augment the training data is showed in the next histogram:
 
-![Uniform random translation][translation =100]
+![Uniform random translation][translation =100x]
 
 We can think of this as making the convolution between a uniform distribution with a range of "translation_range_angle", and the original data histogram.
 
