@@ -1,3 +1,12 @@
+TODO:
+- code line quotes
+- cropped image
+- resized image
+- normalized image
+- Appropriate training data
+- img of the final architecture
+- References
+
 **Behavioral Cloning Project**
 
 The goals / steps of this project are the following:
@@ -15,7 +24,7 @@ The goals / steps of this project are the following:
 [LR0315]: ./analysis/translation_LR_34_24108_0.3_0.15.png
 [LR0250125]: ./analysis/translation_LR_34_8036_0.25_0.125.png
 [gauss025015]: ./analysis/gauss_translation_LR_34_64288_0.25_0.15.png
-
+[side_cameras]: ./analysis/LR_34_8036.png
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -43,23 +52,23 @@ python drive.py model.h5
 
 ####3. Submission code is usable and readable
 
-The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
+The train_model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
 ###Model Architecture and Training Strategy
 
 ####1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
+[//]: # My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
+[//]: # The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
 
-My model consists of a convolution neural network with 3x3 and 5x5 filter sizes and depths between 3 and 64 (models.py)
+My model consists of a convolution neural network with 3x3 and 5x5 filter sizes and depths between 3 and 128 (models.py)
 The model includes ELU layers to introduce nonlinearity which make transition between angles smoother, as the activation function is continuous. 
 Besides, the input image is cropped removing 26 pixels from the bottom and 52 from the top
 This way we focus on the road, without paying attention to anything else in the background
 The resulting cropped image can be seen in the following figure:
-cropped img
+![cropped img][cropped_img]
 
-Furthermore, I resize this cropped image to 64x64, in order to reduce memory usage, and then normalize the values between -1 and 1.
+Furthermore, I resize this cropped image to 64x64, in order to reduce memory usage, and then normalize the values between -1 and 1, using Keras lambda layers.
  
 ####2. Attempts to reduce overfitting in the model
 
@@ -71,9 +80,9 @@ The model was tested by running it through the simulator and ensuring that the v
 
 ####3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+The model used an Adam optimizer, so the learning rate was not tuned manually (model.py line 25).
 However, I played a little bit with the number of epochs and the batch size, arriving at the conclusion that 5 epochs and a batch size of 128 was good enough.
-!!!that 3 epochs were enough and that a typical batch size of 128 was may be more or less the same as a batch size of 64, in terms of the loss results. That being said, I used batches of 64 images, to reduce GPU and memory usage. In addition, a low size for the batch provides better generalization of the model.
+[//]: # that 3 epochs were enough and that a typical batch size of 128 was may be more or less the same as a batch size of 64, in terms of the loss results. That being said, I used batches of 64 images, to reduce GPU and memory usage. In addition, a low size for the batch provides better generalization of the model.
 
 ####4. Appropriate training data
 
@@ -81,9 +90,7 @@ Training data was chosen to keep the vehicle driving on the road. I used a combi
 
 For details about how I created the training data, see the next section. 
 
-###Model Architecture and Training Strategy
-
-####1. Solution Design Approach
+####4. Solution Design Approach
 
 The overall strategy for deriving a model architecture was to improve a simple model progressively.
 
@@ -91,33 +98,36 @@ My first step was to use a convolution neural network model similar to the one f
 http://images.nvidia.com/content/tegra/automotive/images/2016/solutions/pdf/end-to-end-dl-using-px.pdf
 
 I thought this model might be appropriate because the objective of that paper is to set up a network that learns the entire processing
-pipeline needed to steer an automobile, achieving impressive results with minimum training data and only the human steering angle as the training signal.
+pipeline needed to steer an automobile, achieving impressive results with minimum training data and only the human steering angle as the training signal, which is the same case of this project.
 
 First, I used the following architecture, using ReLu activations and without any dropouts. I started out with only 3 images for training: one with straight angle (zero), another with negative angle, and the other with positive angle. I increased the number of epochs until the model overfitted, that is, predicted exactly those 3 input images with extremely good precision. Then I tried other architectures like a VGG16 and a VGG19 pre-trained with 'imagenet', and others convolution neural networks comparing their resulting loss. I concluded that the NVIDIA-like model was a good choice.
 
-Then, I added one convolutional layer at the beginning of the model with 1x1 filter and a depth of 3. The idea behind this layer is to let the network decide which color subspace fits better for this application.
+Then, I added one convolutional layer at the beginning of the model with 1x1 filter and a depth of 3, applying what I learned in the previous project (Traffic Signs Classifier). The idea behind this layer is to let the network decide which color subspace fits better for this application.
 
 After that, I duplicate the convolutional operations within each layer and added some dropout. I found that the best places to insert dropout was at the beginning and ending of the fully connected layers by trial and error with different models.
 Furthermore, I added an additional layer of convolution with 128 3x3 filter.
 
 
-####2. Final Model Architecture
+####5. Final Model Architecture
 
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
+The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes:
 
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
+![Final model][model]
 
-![alt text][image1]
+
 
 
 ### Analysis and augmentation of the training data
+
 To improve the driving behavior in these cases, I decided to analyse the training data at the input in order to find out the exact amount of examples for each different steering angle. For this, I made an histogram, as we can see in the following figure:
 
 ![Original data][original_data]
 
+We can notice that around 4500 images of the dataset (out of a total of 8000) are from the car driving straight, that is steering angle zero. This is not a good training for the model, because it will learn mostly to drive straight, but we want it to take turns as well.
+
 I tried using left and right cameras for training, adjusting the steering angle according to NVIDIA paper, in order to obtain more turns in the training process. To achieve this, every time I read a line from the csv containing all the images paths during training, I decided randomly which camera to take with 34% chance of choosing the central camera, and 33% for each side camera. When choosing a side camera, the angle shift (let's call it LR_shift_angle) to adjust the original steering angle was a parameter to tune, but I will talk about that later. The resulting histogram can be seen in the next figure:
 
-![Side cameras][analysis/LR_34_8036.png]
+![Side cameras][side_cameras]
 
 We can think of the original data histogram as a delta in the origin, because most of the images are from the car driving straight (steering angle = 0).
 When we take into account left and right cameras and assume a fixed steering angle for each one (let's say +-LR_shift_angle), we can think of the result as an addition of two deltas, one in -LR_shift_angle and the other in LR_shift_angle. The high of this deltas are proportional to the probability we are considering for taking side cameras divided by two.
