@@ -6,6 +6,7 @@ TODO:
 - Appropriate training data
 - img of the final architecture
 - References
+- vertical shifts
 
 **Behavioral Cloning Project**
 
@@ -20,6 +21,7 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [original_data]: ./analysis/original_data.png
+[translation]: ./analysis/translation.png
 [addition]: ./analysis/addition.png
 [LR0315]: ./analysis/translation_LR_34_24108_0.3_0.15.png
 [LR0250125]: ./analysis/translation_LR_34_8036_0.25_0.125.png
@@ -130,23 +132,24 @@ I tried using left and right cameras for training, adjusting the steering angle 
 ![Side cameras][side_cameras]
 
 We can think of the original data histogram as a delta in the origin, because most of the images are from the car driving straight (steering angle = 0).
-When we take into account left and right cameras and assume a fixed steering angle for each one (let's say +-LR_shift_angle), we can think of the result as an addition of two deltas, one in -LR_shift_angle and the other in LR_shift_angle. The high of this deltas are proportional to the probability we are considering for taking side cameras divided by two.
+When we take into account left and right cameras and assume a fixed steering angle for each one (let's say +-LR_shift_angle), we can think of the result as an addition of two deltas, one in +LR_shift_angle and the other in -LR_shift_angle. The high of this deltas are proportional to the probability we are considering for taking side cameras divided by two.
 So, if the straight angle delta has a height of center_camera_prob, then left and right cameras will have a height of (1-center_camera_prob)/2 each one.
 
-As we can see, this is not a good training set, because the car will tend to drive straight or a fixed right or a fixed left steering angle. In reality, a human normally make continuous turns rising up the steering angle smoothly. To achieve this, we need more examples of turning angles.
+As we can see, this is not a good training set, because the car will tend to drive straight or a fixed right or a fixed left steering angle. In reality, a human normally make continuous turns, rising up the steering angle smoothly. To achieve this, we need more examples of turning angles.
 A good way to accomplish this is easily found on the internet, and consists on applying a random translation to every image in the horizontal axis and adjust the steering angle accordingly. However, I performed a tweak to this method, boosting up the results. The internet method (described for example in the article of Vivek Yadav)
 https://chatbotslife.com/using-augmentation-to-mimic-human-driving-496b569760a9#.afvzh0wrx
 apply a uniformly distributed random translation, with a range of 0.4, so the maximum shift in the steering angle was of 0.2. This is another parameter to tune, let's call it translation_range_angle. The result of using this to augment the training data is showed in the next histogram:
-![Uniform random translation][analysis/translation.png]
+
+![Uniform random translation][translation =100]
 
 We can think of this as making the convolution between a uniform distribution with a range of "translation_range_angle", and the original data histogram.
 
 If we combine the side cameras with the translation shifts the result we obtain can be viewed as the convolution between:
-- the original data histogram plus both left and right deltas
+- the original data histogram plus both left and right deltas, 
 and 
 - a uniform distribution with a range of "translation_range_angle"
 
-This is an addition of these 3 images:
+This is an addition of these 3 images (each one is the convolution of the uniform distribution with a delta):
 
 ![Side cameras and random shift][addition]
 
