@@ -23,8 +23,8 @@ The goals / steps of this project are the following:
 [original_data]: ./analysis/original_data.png
 [translation]: ./analysis/translation.png
 [addition]: ./analysis/addition.png
-[LR0315]: ./analysis/translation_LR_34_24108_0.3_0.15.png
-[LR0250125]: ./analysis/translation_LR_34_8036_0.25_0.125.png
+[LR0315]: ./analysis/translation_LR_34_64288_0.30_0.15.png
+[LR0250125]: ./analysis/translation_LR_34_64288_0.25_0.12.png
 [gauss025015]: ./analysis/gauss_translation_LR_34_64288_0.25_0.15.png
 [side_cameras]: ./analysis/LR_34_8036.png
 
@@ -56,12 +56,12 @@ python drive.py model.h5
 
 The train_model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
-###Model Architecture and Training Strategy
+###Model Architecture
 
 ####1. An appropriate model architecture has been employed
 
-[//]: # My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
-[//]: # The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
+[//]: # (My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) )
+[//]: # (The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). )
 
 My model consists of a convolution neural network with 3x3 and 5x5 filter sizes and depths between 3 and 128 (models.py)
 The model includes ELU layers to introduce nonlinearity which make transition between angles smoother, as the activation function is continuous. 
@@ -84,15 +84,17 @@ The model was tested by running it through the simulator and ensuring that the v
 
 The model used an Adam optimizer, so the learning rate was not tuned manually (model.py line 25).
 However, I played a little bit with the number of epochs and the batch size, arriving at the conclusion that 5 epochs and a batch size of 128 was good enough.
-[//]: # that 3 epochs were enough and that a typical batch size of 128 was may be more or less the same as a batch size of 64, in terms of the loss results. That being said, I used batches of 64 images, to reduce GPU and memory usage. In addition, a low size for the batch provides better generalization of the model.
+[//]: # (that 3 epochs were enough and that a typical batch size of 128 was may be more or less the same as a batch size of 64, in terms of the loss results. That being said, I used batches of 64 images, to reduce GPU and memory usage. In addition, a low size for the batch provides better generalization of the model.)
 
 ####4. Appropriate training data
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
+Training data was chosen to keep the vehicle driving on the road. 
+[//]: # (I used a combination of center lane driving, recovering from the left and right sides of the road.)
+I started out with the original data set provided by the course, analysing and preprocessing it.
 
 For details about how I created the training data, see the next section. 
 
-####4. Solution Design Approach
+####3. Solution Design Approach
 
 The overall strategy for deriving a model architecture was to improve a simple model progressively.
 
@@ -110,7 +112,7 @@ After that, I duplicate the convolutional operations within each layer and added
 Furthermore, I added an additional layer of convolution with 128 3x3 filter.
 
 
-####5. Final Model Architecture
+####6. Final Model Architecture
 
 The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes:
 
@@ -120,6 +122,8 @@ The final model architecture (model.py lines 18-24) consisted of a convolution n
 
 
 ### Analysis and augmentation of the training data
+
+At first, the model was trained with only the original data without data augmentation. When I ran the simulator to see how well the car was driving around track one, it drove well up to the second curve (the one after the bridge) where it crashed. I thought that this could happened because most time of the training was driving straight and only a few seconds of left and right turning.
 
 To improve the driving behavior in these cases, I decided to analyse the training data at the input in order to find out the exact amount of examples for each different steering angle. For this, I made an histogram, as we can see in the following figure:
 
@@ -140,7 +144,7 @@ A good way to accomplish this is easily found on the internet, and consists on a
 https://chatbotslife.com/using-augmentation-to-mimic-human-driving-496b569760a9#.afvzh0wrx
 apply a uniformly distributed random translation, with a range of 0.4, so the maximum shift in the steering angle was of 0.2. This is another parameter to tune, let's call it translation_range_angle. The result of using this to augment the training data is showed in the next histogram:
 
-![Uniform random translation][translation =100x]
+![Uniform random translation][translation]
 
 We can think of this as making the convolution between a uniform distribution with a range of "translation_range_angle", and the original data histogram.
 
@@ -153,7 +157,7 @@ This is an addition of these 3 images (each one is the convolution of the unifor
 
 ![Side cameras and random shift][addition]
 
-This way we see that for the resulting distribution to be uniform, we need that half of the width between deltas (that is equal to LR_shift_angle/2) match with half of the uniform range (translation_range_angle/2 = max translation_shift_angle).
+This way we see that for the resulting distribution to be uniform, we need that half of the width between deltas (that is equal to LR_shift_angle/2) match with half of the uniform range (translation_range_angle/2 = max translation_shift_angle), so that none of the uniform distributions to be added overlap and the result is also uniform.
 
 For example, setting LR_shift_angle = 0.3 and max translation_shift_angle = 0.15 we achieve a uniform distribution. However, in this case we are making turning images from left and right cameras into really aggressive steering angles, so the driving results is not smooth.
 
@@ -172,18 +176,25 @@ Another improvement for data augmentation was to randomly flip half of the train
 
 To make the model more robust, I also augment brightness randomly to simulate day and night conditions. This was fundamental in order to autonomously drive in the other track provided in the simulator.
 
+Furthermore, I also translated randomly the image in the vertical direction to simulate up and down slope of the road (this time with the uniform distribution to bound clearly this shift). For the record, I set the horizontal translation shift to 
+WIDTH/20 (8 pixels) and the vertical one to HEIGHT/50 (6.4 pixels). 
+[//]: # (WIDTH/3.2 (100 pixels) and the vertical one to HEIGHT/4 (40 pixels). )
+This numbers are independent of the numerical value of the steering angle shift discussed above. However, it modifies the behavior the car will adopt when it sees a curve ahead. This particular values are really low, so the translation is very small for every image. The consequence of this, is that it makes the model learn that it is possible to take several steering angle values in very similar images, achieving more flexibility.
+
 For all this tweaks to take effect, I had to iterate the original data set several times to augment significantly the training data. The original data contained around 8000 lines in the CSV log file, i.e. 8000 frames. That is 24000 images if you consider side cameras. I decided to run over the log file 8 times, taking only one image per line and applying these random tweaks, thus generating a total of 8*8000=64000 different images.
 
 
 
 
-[//]: # The final step was to run the simulator to see how well the car was driving around track one. 
-[//]: # The car drove well up to the second curve (the one after the bridge) where it crashed. I thought that this could happened because most time of the training was driving straight and only a few seconds of left and right turning.
-
-[//]: # At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
-
 
 ### Creation of the Training Set & Training Process
+### Training Process
+
+
+[//]: # (The final step was to run the simulator to see how well the car was driving around track one. )
+[//]: # (The car drove well up to the second curve (the one after the bridge) where it crashed. I thought that this could happened because most time of the training was driving straight and only a few seconds of left and right turning.)
+
+[//]: # (At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.)
 
 To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
 

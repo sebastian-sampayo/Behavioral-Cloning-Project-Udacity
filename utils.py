@@ -67,8 +67,10 @@ def shuffle_csv(input_file, output_file):
 # https://chatbotslife.com/using-augmentation-to-mimic-human-driving-496b569760a9#.4kpw1hort
 def translate_image(image, angle, x_range, y_range):
     # Translation
-    # x_shift = x_range * np.random.uniform() - x_range / 2
-    x_shift = np.random.normal(0, x_range/2)
+    if GAUSSIAN_TRANSLATION == True:
+      x_shift = np.random.normal(0, x_range/2)
+    else:
+      x_shift = x_range * np.random.uniform() - x_range / 2
     shifted_angle = angle + x_shift / x_range * 2 * translation_shift_angle
     y_shift = y_range * np.random.uniform() - y_range / 2
 

@@ -1,6 +1,7 @@
 import numpy as np
 import math
 from keras.models import Sequential, Model
+import json
 
 # User functions, models and configuration parameters
 from params import *
@@ -81,6 +82,14 @@ if (save_mode == True ):
     print('Saving model...')
     model_filename = 'model.h5'
     model.save(model_filename)  # creates a HDF5 file 'model.h5'
+    
+    # POST PROCESSING, SAVE MODEL TO DISK
+    with open('model.json', 'w') as json_file:
+      json_file.write(model.to_json())
+
+    # save weights as model.h5
+    model.save_weights('model_weights.h5')
+
     print('Model saved.')
     
 # Note on saving model:

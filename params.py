@@ -44,9 +44,10 @@ validation_factor = 0.2
 shift_angle = 0.25
 
 # Translation ranges for data augmentation
-x_translation_range = resized_shape[0]/8 # 8
-y_translation_range = resized_shape[1]/10 # 6.4
+x_translation_range = img_shape[1]/20 # /20 = 8 # 8/64=1/8 ## /3.2 = 100
+y_translation_range = img_shape[0]/50 # /50 = 6.4 # 6.4/64 = 1/10 ## /4 = 40
 translation_shift_angle = 0.15
+GAUSSIAN_TRANSLATION = True
 
 # fix random seed for reproducibility
 seed = 3
@@ -79,4 +80,4 @@ optimizer = 'Adam'
 
 # ----------------------------------------------------------------------------
 # Autonomous driving
-driving_throttle = 0.2
+driving_throttle = 0.3
