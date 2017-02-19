@@ -3,7 +3,7 @@ TODO:
 - References
 - code line quotes
 
-**Behavioral Cloning Project**
+# Behavioral Cloning Project
 
 The goals / steps of this project are the following:
 * Use the simulator to collect data of good driving behavior
@@ -12,6 +12,8 @@ The goals / steps of this project are the following:
 * Test that the model successfully drives around track one without leaving the road
 * Summarize the results with a written report
 
+** Resume
+This project was amazing. I learned a lot about learning models
 
 [//]: # (Image References)
 
