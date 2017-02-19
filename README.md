@@ -1,12 +1,8 @@
 TODO:
-- code line quotes
-- cropped image
-- resized image
-- normalized image
 - Appropriate training data
-- img of the final architecture
 - References
 - vertical shifts
+- code line quotes
 
 **Behavioral Cloning Project**
 
@@ -20,6 +16,8 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
+[preprocessing]: ./analysis/preprocessing.png
+[model]: ./analysis/model.png
 [original_data]: ./analysis/original_data.png
 [translation]: ./analysis/translation.png
 [addition]: ./analysis/addition.png
@@ -27,6 +25,8 @@ The goals / steps of this project are the following:
 [LR0250125]: ./analysis/translation_LR_34_64288_0.25_0.12.png
 [gauss025015]: ./analysis/gauss_translation_LR_34_64288_0.25_0.15.png
 [side_cameras]: ./analysis/LR_34_8036.png
+[generated_img_C]: ./analysis/augmented_C
+[generated_img_R]: ./analysis/augmented_R
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -65,12 +65,13 @@ The train_model.py file contains the code for training and saving the convolutio
 
 My model consists of a convolution neural network with 3x3 and 5x5 filter sizes and depths between 3 and 128 (models.py)
 The model includes ELU layers to introduce nonlinearity which make transition between angles smoother, as the activation function is continuous. 
-Besides, the input image is cropped removing 26 pixels from the bottom and 52 from the top
-This way we focus on the road, without paying attention to anything else in the background
-The resulting cropped image can be seen in the following figure:
-![cropped img][cropped_img]
-
+Besides, the input image is cropped removing 1/6 of the image height (26 pixels) from the bottom and 1/3 (52 pixels) from the top. 
+This way we focus on the road, without paying attention to anything else in the background and zoom in the part of the image that contains the curve information.
 Furthermore, I resize this cropped image to 64x64, in order to reduce memory usage, and then normalize the values between -1 and 1, using Keras lambda layers.
+
+The resulting cropped and resized image can be seen in the following figure. The normalization phase is more of a numerical than a visual matter.
+
+![Preprocessing][preprocessing]
  
 ####2. Attempts to reduce overfitting in the model
 
@@ -183,7 +184,13 @@ This numbers are independent of the numerical value of the steering angle shift 
 
 For all this tweaks to take effect, I had to iterate the original data set several times to augment significantly the training data. The original data contained around 8000 lines in the CSV log file, i.e. 8000 frames. That is 24000 images if you consider side cameras. I decided to run over the log file 8 times, taking only one image per line and applying these random tweaks, thus generating a total of 8*8000=64000 different images.
 
+In the next figures, we can see some examples of this artificially generated images for the center camera first:
 
+![Artificially generated images][generated_img_C]
+
+and for the right camera next:
+
+![Artificially generated images][generated_img_R]
 
 
 
