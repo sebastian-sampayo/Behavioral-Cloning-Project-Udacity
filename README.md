@@ -7,7 +7,7 @@ The goals / steps of this project are the following:
 * Test that the model successfully drives around track one without leaving the road
 * Summarize the results with a written report
 
-** Resume
+## Resume
 This project was amazing. I learned a lot about deep neural networks and image processing. 
 In summary, the results are satisfactory because I could train a model with minimal data from
 one track and managed to drive autonomously on both known and unknown tracks at moderate speed.
@@ -45,7 +45,7 @@ My project includes the following files:
 [//]: # (* analyse_data.py for analysis of the training data.)
 * drive.py for driving the car in autonomous mode
 * model.h5 containing a trained convolution neural network trained with original and new data sets
-* model_original.h5 containing a trained convolution neural network only trained with the original data set
+* original_model.h5 containing a trained convolution neural network only trained with the original data set
 * writeup_report.md or writeup_report.pdf summarizing the results
 
 ####2. Submission includes functional code
@@ -90,7 +90,7 @@ At the end, I recorded one lap on track 1 using center lane driving for validati
 ####3. Model parameter tuning
 
 The model used an Adam optimizer, so the learning rate was not tuned manually (params.py, line 68).
-However, I played a little bit with the number of epochs and the batch size, arriving at the conclusion that 5 epochs and a batch size of 128 was good enough, in terms of the loss results. The loss function used in the training process was the mean squared error, because it is better for this application than other metrics. I achieved around 0.01-0.02 at the end.
+However, I played a little bit with the number of epochs and the batch size, arriving at the conclusion that 5 epochs and a batch size of 128 was good enough, in terms of the loss results. The loss function used in the training process was the mean squared error, that suits better than other metrics because the output of the model for this application is a single continuous numeric value. I achieved around 0.01-0.02 at the end.
 
 [//]: # (that 3 epochs were enough and that a typical batch size of 128 was may be more or less the same as a batch size of 64, in terms of the loss results. That being said, I used batches of 64 images, to reduce GPU and memory usage. In addition, a low size for the batch provides better generalization of the model.)
 
@@ -115,7 +115,7 @@ pipeline needed to steer an automobile, achieving impressive results with minimu
 
 First, I used the following architecture, using ReLu activations and without any dropouts.
 
-[First model][nvidia1_model]
+![First model][nvidia1_model]
 
 I started out with only 3 images for training: one with straight angle (zero), another with negative angle, and the other with positive angle. I increased the number of epochs until the model overfitted, that is, predicted exactly those 3 input images with extremely good precision. Then I tried other architectures like a VGG16 and a VGG19 pre-trained with 'imagenet', and others convolution neural networks comparing their resulting loss. I concluded that the NVIDIA-like model was a good choice.
 
