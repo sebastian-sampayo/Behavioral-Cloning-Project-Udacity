@@ -100,7 +100,7 @@ Training data was chosen to keep the vehicle driving on the road.
 [//]: # (I used a combination of center lane driving, recovering from the left and right sides of the road.)
 I started out with the original data set provided by the course, analysing and preprocessing it. I got a model working on both roads with that. Then I added new data to help specifically in turns, and allowing the autonomous car to drive faster without crashing.
 
-For the future, it would be great to keep training the car with straight driving, because at high speeds it drives in zigzag on a straight road.
+For the future, it would be great to keep training the car with straight driving, because at high speeds it drives in zigzag on a straight road. Although, this behavior could be because of the performance of my hardware, which in this case is a GeForce GTX 960M with 2GB of video memory.
 
 For details about how I created the training data, see the sections "Analysis and augmentation of the training data" and "Creation of the Training Set & Training Process". 
 
@@ -223,5 +223,7 @@ This was saved in the folders curves_data and curves_data2 and fed into the mode
 
 I didn't repeat this process on track 2 because I wanted to try out the model on an entirely new scenario to see what happen. Fortunately, I obtained really good results, both with low and high graphics quality and resolution.
 
-### Videos
+### Videos - High quality
+In the following YouTube videos I captured the screen of the results during autonomous driving with high quality images.
 [Track 1](https://youtu.be/u7QpdcoEPPw)
+[Track 2](https://youtu.be/xRBW0KxH8AY)

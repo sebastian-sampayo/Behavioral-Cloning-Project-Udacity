@@ -69,4 +69,4 @@ optimizer = 'Adam'
 
 # ----------------------------------------------------------------------------
 # Autonomous driving
-driving_throttle = 0.3
+driving_throttle = 0.2
