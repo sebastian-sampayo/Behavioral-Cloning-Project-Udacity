@@ -14,7 +14,7 @@ print('Number of training samples: ', n_train_samples)
 # Augment number of training samples by increasing samples per epoch  
 # n_train_samples *= augmentation_factor
 # n_train_samples *= 3
-n_train_samples = 1
+# n_train_samples = 1
 BATCH_SIZE = 1
 print('New number of training samples: ', n_train_samples)
 
@@ -32,6 +32,7 @@ print('New number of training samples: ', n_train_samples)
 # title = 'Right camera + random shifts'
 # filename = 'analysis/gauss_translation_LR_{}_{}_{:.2f}_{:.2f}.png'.format(int(center_camera_prob*100), n_train_samples, shift_angle, translation_shift_angle)
 # title = 'Gaussian translation'
+title = 'Curves data. Center camera probability: {}%'.format(int(center_camera_prob*100))
 img_dir = 'analysis/'
 title_before = 'Original image'
 title_crop = 'Cropped image'
@@ -54,39 +55,39 @@ for out in generate_arrays_from_file(train_log_file, 1):
   angles.append(angle)
   img = out[0][0]
   
-  img_trans, angle_trans = translate_image(img, angle, x_translation_range, y_translation_range)
-  # img = add_random_shadow(img) # just for robustness
-  img_bright = augment_brightness_camera_images(img_trans) # just for robustness
-  angle_bright = angle_trans
-  img_flip, angle_flip = flip_image(img_bright, angle_bright)
+  # img_trans, angle_trans = translate_image(img, angle, x_translation_range, y_translation_range)
+  # # img = add_random_shadow(img) # just for robustness
+  # img_bright = augment_brightness_camera_images(img_trans) # just for robustness
+  # angle_bright = angle_trans
+  # img_flip, angle_flip = flip_image(img_bright, angle_bright)
   
-  img_crop = crop_image(img_flip)
-  img_resized = sci.imresize(img_crop, (64, 64))
+  # img_crop = crop_image(img_flip)
+  # img_resized = sci.imresize(img_crop, (64, 64))
   
-  plt.imshow(img)
-  plt.title('Original. Steering angle = {}'.format(angle))
-  plt.savefig(img_dir + 'original_img2.png')
-  plt.show()
+  # plt.imshow(img)
+  # plt.title('Original. Steering angle = {}'.format(angle))
+  # # plt.savefig(img_dir + 'original_img2.png')
+  # plt.show()
   
-  plt.imshow(img_trans)
-  plt.title('Translated image. Steering angle = {}'.format(angle_trans))
-  plt.savefig(img_dir + 'translated.png')
-  plt.show()
+  # plt.imshow(img_trans)
+  # plt.title('Translated image. Steering angle = {}'.format(angle_trans))
+  # # plt.savefig(img_dir + 'translated.png')
+  # plt.show()
   
-  plt.imshow(img_bright)
-  plt.title('Brightness augmentated image. Steering angle = {}'.format(angle_bright))
-  plt.savefig(img_dir + 'brightness.png')
-  plt.show()
+  # plt.imshow(img_bright)
+  # plt.title('Brightness augmentated image. Steering angle = {}'.format(angle_bright))
+  # # plt.savefig(img_dir + 'brightness.png')
+  # plt.show()
   
-  plt.imshow(img_flip)
-  plt.title('Flipped image. Steering angle = {}'.format(angle_flip))
-  plt.savefig(img_dir + 'flip.png')
-  plt.show()
+  # plt.imshow(img_flip)
+  # plt.title('Flipped image. Steering angle = {}'.format(angle_flip))
+  # # plt.savefig(img_dir + 'flip.png')
+  # plt.show()
   
-  plt.imshow(img_resized)
-  plt.title('Cropped and resized image. Steering angle = {}'.format(angle_flip))
-  plt.savefig(img_dir + 'augment_resized.png')
-  plt.show()
+  # plt.imshow(img_resized)
+  # plt.title('Cropped and resized image. Steering angle = {}'.format(angle_flip))
+  # # plt.savefig(img_dir + 'augment_resized.png')
+  # plt.show()
   
   i += 1
   if i%1000 == 0:
@@ -94,11 +95,11 @@ for out in generate_arrays_from_file(train_log_file, 1):
   if i==n_train_samples:
     break
 
-# angles = np.asarray(angles)
-# h = plt.hist(angles, bins=100)
-# plt.xlim([-1, 1])
-# plt.ylabel('Amount of samples')
-# plt.xlabel('Steering angle')
-# plt.title(title)
+angles = np.asarray(angles)
+h = plt.hist(angles, bins=100)
+plt.xlim([-1, 1])
+plt.ylabel('Amount of samples')
+plt.xlabel('Steering angle')
+plt.title(title)
 # plt.savefig(filename)
-# plt.show()
+plt.show()

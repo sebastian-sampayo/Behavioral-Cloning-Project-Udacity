@@ -1,7 +1,6 @@
 import numpy as np
 import math
 from keras.models import Sequential, Model
-import json
 
 # User functions, models and configuration parameters
 from params import *
@@ -11,8 +10,9 @@ from models import *
 # ----------------------------------------------------------------------------
 # Build a Multi-layer feedforward neural network with Keras here.
 
-model = nvidia_like_model_2()
-  
+# model = nvidia_like_model_2()
+model = loaded_model()
+
 # ----------------------------------------------------------------------------
 # Get the number of samples in the csv
 n_train_samples = count_rows(train_log_file)

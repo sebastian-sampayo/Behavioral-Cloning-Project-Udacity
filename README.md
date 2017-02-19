@@ -92,9 +92,9 @@ However, I played a little bit with the number of epochs and the batch size, arr
 
 Training data was chosen to keep the vehicle driving on the road. 
 [//]: # (I used a combination of center lane driving, recovering from the left and right sides of the road.)
-I started out with the original data set provided by the course, analysing and preprocessing it.
+I started out with the original data set provided by the course, analysing and preprocessing it. I got a model working on both roads with that. Then I added new data to help specifically in turns, and allowing the autonomous car to drive faster without crashing.
 
-For details about how I created the training data, see the next section. 
+For details about how I created the training data, see the next sections. 
 
 ####3. Solution Design Approach
 
@@ -200,36 +200,16 @@ and for the right camera next:
 
 
 ### Creation of the Training Set & Training Process
-### Training Process
-
 
 [//]: # (The final step was to run the simulator to see how well the car was driving around track one. )
 [//]: # (The car drove well up to the second curve (the one after the bridge) where it crashed. I thought that this could happened because most time of the training was driving straight and only a few seconds of left and right turning.)
 
 [//]: # (At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.)
 
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
+To capture good driving behavior, I first used the original data provided, that consists of driving on track 1 using center lane driving.
 
-![alt text][image2]
+I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to drive stable. I also recorded several times this corrections during the two most difficult curves, teaching the car to take this turns correctly. I used this data for fine-tunning the model
 
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
+This was saved in the folders curves_data and curves_data2 and fed into the model training only the top fully connected layer. The idea was to train something really specific, so, this time I tried to use the center camera most of the times (70% chance) and I didn't augment data through random translation. I also discarded some straight driving samples (2 out of 3).
 
-![alt text][image3]
-![alt text][image4]
-![alt text][image5]
-
-Then I repeated this process on track two in order to get more data points.
-
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
-
-![alt text][image6]
-![alt text][image7]
-
-Etc ....
-
-After the collection process, I had X number of data points. I then preprocessed this data by ...
-
-
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
-
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+I didn't repeat this process on track 2 because I wanted to try out the model on an entirely new scenario to see what happen. Fortunately, I obtained really good results, both with low and high graphics quality and resolution.

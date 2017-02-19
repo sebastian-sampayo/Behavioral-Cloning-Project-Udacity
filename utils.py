@@ -87,7 +87,6 @@ def translate_image(image, angle, x_range, y_range):
 def flip_image(image, angle):
   flipped_angle = angle
   ind_flip = np.random.randint(2)
-  ind_flip = 0
   if ind_flip==0:
       image = cv2.flip(image,1)
       flipped_angle = -angle
@@ -131,13 +130,12 @@ def add_random_shadow(image):
 # ----------------------------------------------------------------------------
 # Transform image (translation, flip, rotation, etc)
 def data_augmentation(img, steering_angle):
-  img, steering_angle = translate_image(img, steering_angle, x_translation_range, y_translation_range)
+  # img, steering_angle = translate_image(img, steering_angle, x_translation_range, y_translation_range)
   # img = add_random_shadow(img) # just for robustness
   img = augment_brightness_camera_images(img) # just for robustness
   img, steering_angle = flip_image(img, steering_angle)
   return img, steering_angle
 
-  
 # ----------------------------------------------------------------------------
 # Parse the csv row, and load an image from one of the three cameras available
 # Adjust the steering angle accordingly
@@ -149,14 +147,13 @@ def process_line(line):
     right_idx = 2
     steering_angle_idx = 3
     # Randomly select the camera (center, left or right)
-    # non uniform: 40% chance for center, 30% left, 30% right
+    # non uniform: 34% chance for center, 33% left, 33% right
     dice = np.random.randint(100)
     diceLR = np.random.randint(2) + 1 # 1, 2
     if dice > center_camera_prob*100:
       x_idx = diceLR
     else:
       x_idx = center_idx
-    # x_idx = right_idx # debug
     y_idx = steering_angle_idx
     
     img = mpimg.imread(output[x_idx])
@@ -183,6 +180,11 @@ def generate_arrays_from_file(path, batch_size, predict=False):
       # create numpy arrays of input data
       # and labels, from each line in the file
       img, steering_angle = process_line(line)
+      # If angle is straight, discard 2 out of 3 times
+      if DISCARD_STRAIGHT == True:
+        dice = np.random.randint(3) # 0, 1, 2
+        if (dice > 0 and abs(steering_angle) < 0.004):
+          continue
       img, steering_angle = data_augmentation(img, steering_angle)
       x.append(img)
       y.append(steering_angle)

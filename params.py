@@ -9,11 +9,6 @@ img_shape = [160, 320, 3]
 resized_shape = [64, 64, 3]
 
 # ----------------------------------------------------------------------------
-# Hyperparameters
-EPOCHS = 5
-BATCH_SIZE = 128
-
-# ----------------------------------------------------------------------------
 # Program modes
 predict_mode = False
 validation_mode = True
@@ -32,20 +27,30 @@ model_filename = 'model.h5'
 
 # We are using data augmentation, so validation images will be slightly different from training data
 # original_log_file = 'data/driving_log.csv'
-train_log_file = 'data/driving_log_shuffled.csv'
-validation_log_file = 'data/driving_log_shuffled2.csv'
+# train_log_file = 'data/driving_log_shuffled.csv'
+# validation_log_file = 'data/driving_log_shuffled2.csv'
+# validation_log_file = 'data/straight_data/driving_log_shuffled2.csv'
+train_log_file = 'data/straight_data/driving_log.csv'
+# train_log_file = 'data/curves_data2/driving_log.csv'
+validation_log_file = 'data/validation/driving_log.csv'
+
+# ----------------------------------------------------------------------------
+# Hyperparameters
+EPOCHS = 5
+BATCH_SIZE = 128
 
 # ----------------------------------------------------------------------------
 # Data augmentation
-augmentation_factor = 8
+augmentation_factor = 4
 validation_factor = 0.2
 
 # Angle correction for side cameras
 shift_angle = 0.25
 
 # Translation ranges for data augmentation
-x_translation_range = img_shape[1]/20 # /20 = 8 # 8/64=1/8 ## /3.2 = 100
-y_translation_range = img_shape[0]/50 # /50 = 6.4 # 6.4/64 = 1/10 ## /4 = 40
+# x_translation_range = img_shape[1]/20 # /20 = 8 # 8/64=1/8 ## /3.2 = 100
+# y_translation_range = img_shape[0]/50 # /50 = 6.4 # 6.4/64 = 1/10 ## /4 = 40
+
 translation_shift_angle = 0.15
 GAUSSIAN_TRANSLATION = True
 
@@ -56,7 +61,9 @@ np.random.seed(seed)
 # Randomly select the camera (center, left or right)
 # non uniform: "center_camera_prob" chance for center,
 # (1 - center_camera_prob) for side camera (evenly split into left and right)
-center_camera_prob = 0.34
+center_camera_prob = 0.7
+# If angle is straight, discard 2 out of 3 times
+DISCARD_STRAIGHT = True
 # ----------------------------------------------------------------------------
 # CSV configuration
 class MyDialect(csv.Dialect):
@@ -78,4 +85,4 @@ optimizer = 'Adam'
 
 # ----------------------------------------------------------------------------
 # Autonomous driving
-driving_throttle = 0.3
+driving_throttle = 0.2

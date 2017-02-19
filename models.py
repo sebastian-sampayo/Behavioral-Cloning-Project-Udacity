@@ -4,6 +4,7 @@ from keras.layers import Input, GlobalAveragePooling2D, Cropping2D
 from keras.layers.core import Dense, Activation, Flatten, Dropout, Merge, Lambda
 from keras.layers.convolutional import Convolution2D
 from keras.layers.pooling import MaxPooling2D
+from keras.models import load_model
 from params import *
 # =============================================================================================== #
 # Build a Multi-layer feedforward neural network with Keras here.
@@ -120,3 +121,17 @@ def nvidia_like_model_2():
 
 # Try: 96x96 at the input, and adding conv 128x3x3 with max pooling
 # or: just adding conv 128x3x3 without maxpooling !
+
+# Loads model filename ".h5" file and make trainable only the last layer for fine-tunning
+def loaded_model(filename='model.h5'):
+  print()
+  print('Loading model...')
+  model = load_model(filename)
+  # Set every layer to be not trainable
+  for layer in model.layers:
+    layer.trainable = False
+  # Set to trainable only the last layer for fine-tunning
+  model.layers[-1].trainable = True
+  print('Model loaded.')
+  print()
+  return model
