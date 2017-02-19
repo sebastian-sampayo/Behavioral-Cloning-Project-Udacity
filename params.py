@@ -50,8 +50,8 @@ translation_shift_angle = 0.15
 GAUSSIAN_TRANSLATION = True
 
 # fix random seed for reproducibility
-# seed = 1
-# np.random.seed(seed)
+seed = 1
+np.random.seed(seed)
 
 # Randomly select the camera (center, left or right)
 # non uniform: "center_camera_prob" chance for center,

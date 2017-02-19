@@ -175,7 +175,7 @@ In order to overcome this problem, I came up with the idea of generating these s
 
 Another improvement for data augmentation was to randomly flip half of the training images and invert the corresponding steering angle, equalizing the amount of left and right turns.
 
-To make the model more robust, I also augment/decrease brightness randomly to simulate day and night conditions. This was fundamental in order to autonomously drive in the other track provided in the simulator. The original code for this tweak was taken from internet, but it had problems. When the brightness was reduced it worked well. However, when the brightness was augmented for pixel beyond 255, the result was not certainly what I expected. For example, when the result was 256, it was turned into 256 - 255 = 1. So I added a saturation block in the HSV space (utils.py, line 101), consisting of:
+To make the model more robust, I also augmented/reduced brightness randomly to simulate day and night conditions. This was fundamental in order to autonomously drive in the other track provided in the simulator. The original code for this tweak was taken from internet, but it had problems. When the brightness was reduced it worked well. However, when the brightness was augmented for pixel beyond 255, the result was not certainly what I expected. For example, when the result was 256, it was turned into 256 - 255 = 1. So I added a saturation block in the HSV space (utils.py, line 101), consisting of:
 
     image1[:,:,2] = np.minimum(image1[:,:,2]*random_bright, 255)
 

@@ -69,10 +69,12 @@ def translate_image(image, angle, x_range, y_range):
     # Translation
     if GAUSSIAN_TRANSLATION == True:
       x_shift = np.random.normal(0, x_range/2)
+      x_shift = x_range/2
     else:
       x_shift = x_range * np.random.uniform() - x_range / 2
     shifted_angle = angle + x_shift / x_range * 2 * translation_shift_angle
     y_shift = y_range * np.random.uniform() - y_range / 2
+    y_shift = y_range/2
 
     modifier = np.float32([[1, 0, x_shift], [0, 1, y_shift]])
     size = (img_shape[1], img_shape[0])
@@ -87,6 +89,7 @@ def translate_image(image, angle, x_range, y_range):
 def flip_image(image, angle):
   flipped_angle = angle
   ind_flip = np.random.randint(2)
+  ind_flip = 0
   if ind_flip==0:
       image = cv2.flip(image,1)
       flipped_angle = -angle
@@ -98,6 +101,7 @@ def flip_image(image, angle):
 def augment_brightness_camera_images(image):
   image1 = cv2.cvtColor(image,cv2.COLOR_RGB2HSV)
   random_bright = .25+np.random.uniform()
+  random_bright = 0.5
   image1[:,:,2] = np.minimum(image1[:,:,2]*random_bright, 255)
   image1 = cv2.cvtColor(image1,cv2.COLOR_HSV2RGB)
   return image1
