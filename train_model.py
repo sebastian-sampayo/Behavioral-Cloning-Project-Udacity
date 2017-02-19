@@ -1,3 +1,14 @@
+# =========================================================================== #
+# Udacity Nanodegree: Self-Driving Car Engineering - December cohort
+# Project 3: Behavioral Cloning
+# Date: 12th February 2017
+# 
+# Author: Sebastián Lucas Sampayo
+# e-mail: sebisampayo@gmail.com
+# file: train_model.py
+# =========================================================================== #
+# Train the model
+
 import numpy as np
 import math
 from keras.models import Sequential, Model
@@ -16,23 +27,12 @@ model = loaded_model()
 # ----------------------------------------------------------------------------
 # Get the number of samples in the csv
 n_train_samples = count_rows(train_log_file)
-# n_train_samples = BATCH_SIZE*20 # DEBUG
-print('Number of training samples: ', n_train_samples)
-if validation_mode == True:
-  n_validation_samples = count_rows(validation_log_file)
-  # Make it multiple of BATCH_SIZE
-  n_validation_samples -= (n_validation_samples % BATCH_SIZE)
-  # n_validation_samples = n_train_samples # DEBUG
-  print('Number of validation samples: ', n_validation_samples)
-  
+print('Number of training samples: ', n_train_samples)  
 # Augment number of training samples by increasing samples per epoch  
 n_train_samples *= augmentation_factor
 # Make it multiple of BATCH_SIZE
 n_train_samples -= (n_train_samples % BATCH_SIZE)
-
 n_validation_samples = math.floor(n_train_samples * validation_factor)
-# n_train_samples = 64 # DEBUG
-# n_validation_samples = 64 # DEBUG
 print('New number of training samples: ', n_train_samples)
 print('New number of validation samples: ', n_validation_samples)
 
@@ -53,10 +53,9 @@ else:
         samples_per_epoch=n_train_samples, nb_epoch=EPOCHS)
   
 # ----------------------------------------------------------------------------
+# Predictions on test cases
 if (predict_mode == True):
     print('Predicting...')
-    # image_array = np.asarray(image)
-    # steering_angle = float(model.predict(image_array[None, :, :, :], batch_size=1))
     predictions = model.predict_generator(generate_arrays_from_file(train_log_file, BATCH_SIZE, predict=True), val_samples=n_train_samples)
     print('Done')
     steering_angle = (predictions)
@@ -82,14 +81,6 @@ if (save_mode == True ):
     print('Saving model...')
     model_filename = 'model.h5'
     model.save(model_filename)  # creates a HDF5 file 'model.h5'
-    
-    # POST PROCESSING, SAVE MODEL TO DISK
-    # with open('model.json', 'w') as json_file:
-      # json_file.write(model.to_json())
-
-    # save weights as model.h5
-    # model.save_weights('model_weights.h5')
-
     print('Model saved.')
     
 # Note on saving model:

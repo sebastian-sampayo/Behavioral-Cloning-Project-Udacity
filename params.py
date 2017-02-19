@@ -5,7 +5,6 @@ from keras.optimizers import Adam
 # ----------------------------------------------------------------------------
 # Shapes
 img_shape = [160, 320, 3]
-# resized_shape = [80, 160, 3]
 resized_shape = [64, 64, 3]
 
 # ----------------------------------------------------------------------------
@@ -17,21 +16,8 @@ save_mode = True
 # ----------------------------------------------------------------------------
 # File names
 model_filename = 'model.h5'
-# train_log_file = 'test/train.csv'
-# validation_log_file = 'test/validation.csv'
-# train_log_file = 'data/train.csv'
-# validation_log_file = 'data/validation.csv'
-# train_log_file = 'three_img/train.csv'
-# train_log_file = 'data/train_random.csv'
-# validation_log_file = 'data/validation_random.csv'
 
-# We are using data augmentation, so validation images will be slightly different from training data
-# original_log_file = 'data/driving_log.csv'
-# train_log_file = 'data/driving_log_shuffled.csv'
-# validation_log_file = 'data/driving_log_shuffled2.csv'
-# validation_log_file = 'data/straight_data/driving_log_shuffled2.csv'
-train_log_file = 'data/straight_data/driving_log.csv'
-# train_log_file = 'data/curves_data2/driving_log.csv'
+train_log_file = 'data/curves_data2/driving_log.csv'
 validation_log_file = 'data/validation/driving_log.csv'
 
 # ----------------------------------------------------------------------------
@@ -47,9 +33,11 @@ validation_factor = 0.2
 # Angle correction for side cameras
 shift_angle = 0.25
 
+# Allow random translation for data augmentation
+TRANSLATION = False
 # Translation ranges for data augmentation
-# x_translation_range = img_shape[1]/20 # /20 = 8 # 8/64=1/8 ## /3.2 = 100
-# y_translation_range = img_shape[0]/50 # /50 = 6.4 # 6.4/64 = 1/10 ## /4 = 40
+x_translation_range = img_shape[1]/20 # /20 = 8 ## /3.2 = 100
+y_translation_range = img_shape[0]/50 # /50 = 6.4 ## /4 = 40
 
 translation_shift_angle = 0.15
 GAUSSIAN_TRANSLATION = True
@@ -69,20 +57,16 @@ DISCARD_STRAIGHT = True
 class MyDialect(csv.Dialect):
     strict = True
     skipinitialspace = True
-    # quoting = csv.QUOTE_ALL
     quoting = csv.QUOTE_NONE
     delimiter = ','
-    # quotechar = "'"
     lineterminator = '\n'
     escapechar='\\'
     
 # ----------------------------------------------------------------------------
 # Configures the learning process and metrics
-# loss = 'sparse_categorical_crossentropy'
-# loss = 'categorical_crossentropy'
 loss = 'mean_squared_error'
 optimizer = 'Adam'
 
 # ----------------------------------------------------------------------------
 # Autonomous driving
-driving_throttle = 0.2
+driving_throttle = 0.3

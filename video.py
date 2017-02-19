@@ -1,3 +1,16 @@
+# =========================================================================== #
+# Udacity Nanodegree: Self-Driving Car Engineering - December cohort
+# Project 3: Behavioral Cloning
+# Date: 12th February 2017
+# 
+# Author: Sebastián Lucas Sampayo
+# e-mail: sebisampayo@gmail.com
+# file: video.py
+# =========================================================================== #
+# This file is used to generate a video with the images taken from the
+# center camera of the car while driving autonomously.
+# This file was provided by Udacity.
+
 from moviepy.editor import ImageSequenceClip
 import argparse
 

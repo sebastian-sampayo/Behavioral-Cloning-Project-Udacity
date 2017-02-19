@@ -61,8 +61,8 @@ def shuffle_csv(input_file, output_file):
   f.close()
 
 # ----------------------------------------------------------------------------
-# translate an image randomly within a certain range and adjust the steering angle accordingly
-# ecuations from:
+# Translate an image randomly within a certain range and adjust the steering angle accordingly
+# equations from:
 # https://carnd-forums.udacity.com/questions/36059111/answers/36059810
 # https://chatbotslife.com/using-augmentation-to-mimic-human-driving-496b569760a9#.4kpw1hort
 def translate_image(image, angle, x_range, y_range):
@@ -93,7 +93,7 @@ def flip_image(image, angle):
   return image, flipped_angle
 
 # ----------------------------------------------------------------------------
-# Randomply augment brightness to simulate day and night conditions
+# Randomly augment brightness to simulate day and night conditions
 # https://chatbotslife.com/using-augmentation-to-mimic-human-driving-496b569760a9#.1zm9bk6xi
 def augment_brightness_camera_images(image):
   image1 = cv2.cvtColor(image,cv2.COLOR_RGB2HSV)
@@ -130,7 +130,8 @@ def add_random_shadow(image):
 # ----------------------------------------------------------------------------
 # Transform image (translation, flip, rotation, etc)
 def data_augmentation(img, steering_angle):
-  # img, steering_angle = translate_image(img, steering_angle, x_translation_range, y_translation_range)
+  if TRANSLATION == True:
+    img, steering_angle = translate_image(img, steering_angle, x_translation_range, y_translation_range)
   # img = add_random_shadow(img) # just for robustness
   img = augment_brightness_camera_images(img) # just for robustness
   img, steering_angle = flip_image(img, steering_angle)

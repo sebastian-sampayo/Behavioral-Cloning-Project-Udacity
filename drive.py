@@ -1,3 +1,17 @@
+# =========================================================================== #
+# Udacity Nanodegree: Self-Driving Car Engineering - December cohort
+# Project 3: Behavioral Cloning
+# Date: 12th February 2017
+# 
+# Author: Sebastián Lucas Sampayo
+# e-mail: sebisampayo@gmail.com
+# file: drive.py
+# =========================================================================== #
+# This file send commands to the simulator based on the predictions made
+# with the images from the camera at runtime.
+# This file was provided by Udacity and the only line modified is 52, where
+# I modify the throttle to test the model for different speeds.
+
 import argparse
 import base64
 from datetime import datetime
@@ -35,7 +49,6 @@ def telemetry(sid, data):
         image = Image.open(BytesIO(base64.b64decode(imgString)))
         image_array = np.asarray(image)
         steering_angle = float(model.predict(image_array[None, :, :, :], batch_size=1))
-        # steering_angle = 0
         throttle = driving_throttle
         print(steering_angle, throttle)
         send_control(steering_angle, throttle)
