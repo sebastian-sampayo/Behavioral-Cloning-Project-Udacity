@@ -222,3 +222,6 @@ I then recorded the vehicle recovering from the left side and right sides of the
 This was saved in the folders curves_data and curves_data2 and fed into the model training only the top fully connected layer. The idea was to train something really specific, so, this time I tried to use the center camera most of the times (70% chance) and I didn't augment data through random translation. I also discarded some straight driving samples (2 out of 3).
 
 I didn't repeat this process on track 2 because I wanted to try out the model on an entirely new scenario to see what happen. Fortunately, I obtained really good results, both with low and high graphics quality and resolution.
+
+### Videos
+[Track 1](https://youtu.be/u7QpdcoEPPw)
