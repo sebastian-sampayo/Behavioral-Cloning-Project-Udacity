@@ -195,7 +195,6 @@ This way we make sure that if the HSV "Value" level is at maximum, then it doesn
 
 Furthermore, I also translated randomly the image in the vertical direction to simulate up and down slope of the road (this time with the uniform distribution to bound clearly this shift). For the record, I set the horizontal translation shift to 
 WIDTH/20 (8 pixels) and the vertical one to HEIGHT/50 (6.4 pixels). 
-[//]: # (WIDTH/3.2 (100 pixels) and the vertical one to HEIGHT/4 (40 pixels). )
 This numbers are independent of the numerical value of the steering angle shift discussed above. However, it modifies the behavior the car will adopt when it sees a curve ahead. This particular values are really low, so the translation is very small for every image. The consequence of this, is that it makes the model learn that it is possible to take several steering angle values in very similar images, achieving more flexibility.
 
 For all this tweaks to take effect, I had to iterate the original data set several times to augment significantly the training data. The original data contained around 8000 lines in the CSV log file, i.e. 8000 frames. That is 24000 images if you consider side cameras. I decided to run over the log file 8 times, taking only one image per line and applying these random tweaks, thus generating a total of 8*8000=64000 different images.
