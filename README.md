@@ -38,7 +38,7 @@ focusing on better training methods or trying out more preprocessing and robust 
 ####1. Submission includes all required files and can be used to run the simulator in autonomous mode
 
 My project includes the following files:
-* train_model.py containing the script to create and train the model
+* train_model.py containing the script to create and train the model (analog to model.py in the rubric)
 * models.py containing a couple of models in Keras to choose for in train_model.py
 * utils.py containing several utilitarian functions used all over the project
 * params.py with a number of parameters to configure the project (epochs, batch_size, data augmentation parameters, etc)
@@ -46,7 +46,7 @@ My project includes the following files:
 * drive.py for driving the car in autonomous mode
 * model.h5 containing a trained convolution neural network trained with original and new data sets
 * original_model.h5 containing a trained convolution neural network only trained with the original data set
-* writeup_report.md or writeup_report.pdf summarizing the results
+* writeup_report.md summarizing the results
 
 ####2. Submission includes functional code
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
@@ -83,9 +83,9 @@ The resulting cropped and resized image can be seen in the following figure. The
 The model contains dropout layers in order to reduce overfitting (models.py lines 78, 83). 
 
 The model was trained and validated on different data sets to ensure that the model was not overfitting (train_model.py, line 46).
-Considering that I processed every image randomly, the validation images were different from the training images, even when they came from the same original dataset
-The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+Considering that I processed every image randomly, the validation images were different from the training images, even when they came from the same original dataset.
 At the end, I recorded one lap on track 1 using center lane driving for validation purposes.
+The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track for both known and unknown scenarios.
 
 ####3. Model parameter tuning
 
@@ -181,7 +181,7 @@ Reducing both angles to LR_shift_angle = 0.25 and translation_shift_angle = 0.12
 ![LR_shift_angle = 0.25, max translation_shift_angle = 0.125][LR0250125]
 
 The drawback of this configuration is that the car is practically not able to make turns with steering angle larger than 0.25 + 0.125 = 0.375, because of the nature of the uniform distribution.
-In order to overcome this problem, I came up with the idea of generating these shifts with a normal gaussian distribution instead of a uniform, allowing a continuous distribution among large steering angle. I set the mean to 0 and the standard deviation = max translation_shift_angle desired. I decided to increase a little bit this last parameter to allow larger angles even more. I end up with LR_shift_angle = 0.25 and translation_shift_angle = 0.15. The resulting histogram is showed below:
+In order to overcome this problem, I came up with the idea of generating these shifts with a normal gaussian distribution instead of a uniform, allowing a continuous distribution among large steering angle. I set the mean to 0 and the standard deviation = max translation_shift_angle desired. I decided to increase a little bit this last parameter to allow larger angles even more. I end up with LR_shift_angle = 0.25 and translation_shift_angle = 0.15. The resulting histogram is shown below:
 
 ![Gaussian translation][gauss025015]
 
