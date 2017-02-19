@@ -84,11 +84,11 @@ if (save_mode == True ):
     model.save(model_filename)  # creates a HDF5 file 'model.h5'
     
     # POST PROCESSING, SAVE MODEL TO DISK
-    with open('model.json', 'w') as json_file:
-      json_file.write(model.to_json())
+    # with open('model.json', 'w') as json_file:
+      # json_file.write(model.to_json())
 
     # save weights as model.h5
-    model.save_weights('model_weights.h5')
+    # model.save_weights('model_weights.h5')
 
     print('Model saved.')
     

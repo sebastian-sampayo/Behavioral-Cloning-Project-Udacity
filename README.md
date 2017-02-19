@@ -25,8 +25,8 @@ The goals / steps of this project are the following:
 [LR0250125]: ./analysis/translation_LR_34_64288_0.25_0.12.png
 [gauss025015]: ./analysis/gauss_translation_LR_34_64288_0.25_0.15.png
 [side_cameras]: ./analysis/LR_34_8036.png
-[generated_img_C]: ./analysis/augmented_C
-[generated_img_R]: ./analysis/augmented_R
+[generated_img_C]: ./analysis/augmented_C.png
+[generated_img_R]: ./analysis/augmented_R.png
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -41,7 +41,7 @@ My project includes the following files:
 * models.py containing a couple of models in Keras to choose for in train_model.py
 * utils.py containing several utilitarian functions used all over the project
 * params.py with a number of parameters to configure the project (epochs, batch_size, data augmentation parameters, etc)
-* analyse_data.py for analysis of the training data.
+[//]: # (* analyse_data.py for analysis of the training data.)
 * drive.py for driving the car in autonomous mode
 * model.h5 containing a trained convolution neural network 
 * writeup_report.md or writeup_report.pdf summarizing the results
@@ -119,7 +119,7 @@ The final model architecture (model.py lines 18-24) consisted of a convolution n
 
 ![Final model][model]
 
-
+All max pooling layers are 2x2, and every single layer in the architecture is followed by an ELU activation (except for the preprocessing blocks, clearly).
 
 
 ### Analysis and augmentation of the training data
@@ -175,7 +175,11 @@ In order to overcome this problem, I came up with the idea of generating these s
 
 Another improvement for data augmentation was to randomly flip half of the training images and invert the corresponding steering angle, equalizing the amount of left and right turns.
 
-To make the model more robust, I also augment brightness randomly to simulate day and night conditions. This was fundamental in order to autonomously drive in the other track provided in the simulator.
+To make the model more robust, I also augment/decrease brightness randomly to simulate day and night conditions. This was fundamental in order to autonomously drive in the other track provided in the simulator. The original code for this tweak was taken from internet, but it had problems. When the brightness was reduced it worked well. However, when the brightness was augmented for pixel beyond 255, the result was not certainly what I expected. For example, when the result was 256, it was turned into 256 - 255 = 1. So I added a saturation block in the HSV space (utils.py, line 101), consisting of:
+
+    image1[:,:,2] = np.minimum(image1[:,:,2]*random_bright, 255)
+
+This way we make sure that if the HSV "Value" level is at maximum, then it doesn't go beyond that.
 
 Furthermore, I also translated randomly the image in the vertical direction to simulate up and down slope of the road (this time with the uniform distribution to bound clearly this shift). For the record, I set the horizontal translation shift to 
 WIDTH/20 (8 pixels) and the vertical one to HEIGHT/50 (6.4 pixels). 

@@ -98,12 +98,7 @@ def flip_image(image, angle):
 def augment_brightness_camera_images(image):
   image1 = cv2.cvtColor(image,cv2.COLOR_RGB2HSV)
   random_bright = .25+np.random.uniform()
-  random_bright = 1.2
-  print(np.min(image1[:,:,2]))
-  img2 = image1.copy()
-  img2[:,:,2] = image1[:,:,2]*random_bright
-  print(np.min(img2[:,:,2]))
-  image1[:,:,2] = image1[:,:,2]*random_bright
+  image1[:,:,2] = np.minimum(image1[:,:,2]*random_bright, 255)
   image1 = cv2.cvtColor(image1,cv2.COLOR_HSV2RGB)
   return image1
     
@@ -121,8 +116,8 @@ def add_random_shadow(image):
   Y_m = np.mgrid[0:image.shape[0],0:image.shape[1]][1]
   shadow_mask[((X_m-top_x)*(bot_y-top_y) -(bot_x - top_x)*(Y_m-top_y) >=0)]=1
   if np.random.randint(4)==1:
-    # random_bright = .25+.7*np.random.uniform()
-    random_bright = .5
+    random_bright = .25+.7*np.random.uniform()
+    # random_bright = .5
     cond1 = shadow_mask==1
     cond0 = shadow_mask==0
     if np.random.randint(2)==1:

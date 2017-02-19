@@ -65,27 +65,27 @@ for out in generate_arrays_from_file(train_log_file, 1):
   
   plt.imshow(img)
   plt.title('Original. Steering angle = {}'.format(angle))
-  # plt.savefig(img_dir + 'original_img2.png')
+  plt.savefig(img_dir + 'original_img2.png')
   plt.show()
   
   plt.imshow(img_trans)
   plt.title('Translated image. Steering angle = {}'.format(angle_trans))
-  # plt.savefig(img_dir + 'translated.png')
+  plt.savefig(img_dir + 'translated.png')
   plt.show()
   
   plt.imshow(img_bright)
   plt.title('Brightness augmentated image. Steering angle = {}'.format(angle_bright))
-  # plt.savefig(img_dir + 'brightness.png')
+  plt.savefig(img_dir + 'brightness.png')
   plt.show()
   
   plt.imshow(img_flip)
   plt.title('Flipped image. Steering angle = {}'.format(angle_flip))
-  # plt.savefig(img_dir + 'flip.png')
+  plt.savefig(img_dir + 'flip.png')
   plt.show()
   
   plt.imshow(img_resized)
   plt.title('Cropped and resized image. Steering angle = {}'.format(angle_flip))
-  # plt.savefig(img_dir + 'augment_resized.png')
+  plt.savefig(img_dir + 'augment_resized.png')
   plt.show()
   
   i += 1
