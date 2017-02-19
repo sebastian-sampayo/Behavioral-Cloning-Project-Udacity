@@ -69,12 +69,10 @@ def translate_image(image, angle, x_range, y_range):
     # Translation
     if GAUSSIAN_TRANSLATION == True:
       x_shift = np.random.normal(0, x_range/2)
-      x_shift = x_range/2
     else:
       x_shift = x_range * np.random.uniform() - x_range / 2
     shifted_angle = angle + x_shift / x_range * 2 * translation_shift_angle
     y_shift = y_range * np.random.uniform() - y_range / 2
-    y_shift = y_range/2
 
     modifier = np.float32([[1, 0, x_shift], [0, 1, y_shift]])
     size = (img_shape[1], img_shape[0])
@@ -101,7 +99,6 @@ def flip_image(image, angle):
 def augment_brightness_camera_images(image):
   image1 = cv2.cvtColor(image,cv2.COLOR_RGB2HSV)
   random_bright = .25+np.random.uniform()
-  random_bright = 0.5
   image1[:,:,2] = np.minimum(image1[:,:,2]*random_bright, 255)
   image1 = cv2.cvtColor(image1,cv2.COLOR_HSV2RGB)
   return image1
@@ -176,7 +173,7 @@ def process_line(line):
 def generate_arrays_from_file(path, batch_size, predict=False):
   while 1:
     # Shuffle data
-    # shuffle_csv(path, path)
+    shuffle_csv(path, path)
     
     f = open(path)
     i = 0
@@ -186,7 +183,7 @@ def generate_arrays_from_file(path, batch_size, predict=False):
       # create numpy arrays of input data
       # and labels, from each line in the file
       img, steering_angle = process_line(line)
-      # img, steering_angle = data_augmentation(img, steering_angle)
+      img, steering_angle = data_augmentation(img, steering_angle)
       x.append(img)
       y.append(steering_angle)
       i += 1

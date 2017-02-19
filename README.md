@@ -1,7 +1,6 @@
 TODO:
 - Appropriate training data
 - References
-- vertical shifts
 - code line quotes
 
 **Behavioral Cloning Project**
@@ -64,12 +63,12 @@ The train_model.py file contains the code for training and saving the convolutio
 [//]: # (The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). )
 
 My model consists of a convolution neural network with 3x3 and 5x5 filter sizes and depths between 3 and 128 (models.py)
-The model includes ELU layers to introduce nonlinearity which make transition between angles smoother, as the activation function is continuous. 
+The model includes ELU layers to introduce nonlinearity and make transition between angles smoother, as the activation function is continuous (in contrast with RELU activation). 
 Besides, the input image is cropped removing 1/6 of the image height (26 pixels) from the bottom and 1/3 (52 pixels) from the top. 
 This way we focus on the road, without paying attention to anything else in the background and zoom in the part of the image that contains the curve information.
 Furthermore, I resize this cropped image to 64x64, in order to reduce memory usage, and then normalize the values between -1 and 1, using Keras lambda layers.
 
-The resulting cropped and resized image can be seen in the following figure. The normalization phase is more of a numerical than a visual matter.
+The resulting cropped and resized image can be seen in the following figure. The normalization phase is more of a numerical than a visual matter, and it's not showed below.
 
 ![Preprocessing][preprocessing]
  

@@ -50,7 +50,7 @@ translation_shift_angle = 0.15
 GAUSSIAN_TRANSLATION = True
 
 # fix random seed for reproducibility
-seed = 1
+seed = 3
 np.random.seed(seed)
 
 # Randomly select the camera (center, left or right)
@@ -74,8 +74,6 @@ class MyDialect(csv.Dialect):
 # loss = 'sparse_categorical_crossentropy'
 # loss = 'categorical_crossentropy'
 loss = 'mean_squared_error'
-# learning_rate = 0.0005
-# optimizer = Adam(lr=learning_rate)
 optimizer = 'Adam'
 
 # ----------------------------------------------------------------------------
