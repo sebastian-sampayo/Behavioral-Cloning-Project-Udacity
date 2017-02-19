@@ -218,7 +218,7 @@ and for the right camera next:
 
 To capture good driving behavior, I first used the original data provided, that consists of driving on track 1 using center lane driving.
 
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to drive stable. I also recorded several times this corrections during the two most difficult curves, teaching the car to take this turns correctly. I used this data for fine-tunning the model
+I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to drive stable. I also recorded several times this corrections during the two most difficult curves, teaching the car to take this turns correctly. I used this data for feature extraction on the model.
 This was saved in the folders curves_data and curves_data2 and fed into the model training only the top fully connected layer. The idea was to train something really specific, so, this time I tried to use the center camera most of the times (70% chance) and I didn't augment data through random translation. I also discarded some straight driving samples (2 out of 3).
 
 I didn't repeat this process on track 2 because I wanted to try out the model on an entirely new scenario to see what happen. Fortunately, I obtained really good results, both with low and high graphics quality and resolution.

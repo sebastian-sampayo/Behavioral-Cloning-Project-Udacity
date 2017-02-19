@@ -86,7 +86,7 @@ def nvidia_like_model_2():
   return model
   
 # =========================================================================== #
-# Loads model filename ".h5" file and make trainable only the last layer for fine-tunning
+# Loads model filename ".h5" file and make trainable only the last layer for feature extraction
 def loaded_model(filename='model.h5'):
   print()
   print('Loading model...')
@@ -94,7 +94,7 @@ def loaded_model(filename='model.h5'):
   # Set every layer to be not trainable
   for layer in model.layers:
     layer.trainable = False
-  # Set to trainable only the last layer for fine-tunning
+  # Set to trainable only the last layer
   model.layers[-1].trainable = True
   print('Model loaded.')
   print()
