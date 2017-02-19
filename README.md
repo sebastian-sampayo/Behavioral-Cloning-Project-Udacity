@@ -225,5 +225,7 @@ I didn't repeat this process on track 2 because I wanted to try out the model on
 
 ### Videos - High quality
 In the following YouTube videos I captured the screen of the results during autonomous driving with high quality images.
+
 [Track 1](https://youtu.be/u7QpdcoEPPw)
+
 [Track 2](https://youtu.be/xRBW0KxH8AY)
