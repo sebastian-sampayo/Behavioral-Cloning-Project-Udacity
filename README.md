@@ -42,7 +42,6 @@ My project includes the following files:
 * models.py containing a couple of models in Keras to choose for in train_model.py
 * utils.py containing several utilitarian functions used all over the project
 * params.py with a number of parameters to configure the project (epochs, batch_size, data augmentation parameters, etc)
-[//]: # (* analyse_data.py for analysis of the training data.)
 * drive.py for driving the car in autonomous mode
 * model.h5 containing a trained convolution neural network trained with original and new data sets
 * original_model.h5 containing a trained convolution neural network only trained with the original data set
@@ -92,12 +91,9 @@ The model was tested by running it through the simulator and ensuring that the v
 The model used an Adam optimizer, so the learning rate was not tuned manually (params.py, line 68).
 However, I played a little bit with the number of epochs and the batch size, arriving at the conclusion that 5 epochs and a batch size of 128 was good enough, in terms of the loss results. The loss function used in the training process was the mean squared error, that suits better than other metrics because the output of the model for this application is a single continuous numeric value. I achieved around 0.01-0.02 at the end.
 
-[//]: # (that 3 epochs were enough and that a typical batch size of 128 was may be more or less the same as a batch size of 64, in terms of the loss results. That being said, I used batches of 64 images, to reduce GPU and memory usage. In addition, a low size for the batch provides better generalization of the model.)
-
 #### 4. Appropriate training data
 
 Training data was chosen to keep the vehicle driving on the road. 
-[//]: # (I used a combination of center lane driving, recovering from the left and right sides of the road.)
 I started out with the original data set provided by the course, analysing and preprocessing it. I got a model working on both roads with that. Then I added new data to help specifically in turns, and allowing the autonomous car to drive faster without crashing.
 
 For the future, it would be great to keep training the car with straight driving, because at high speeds it drives in zigzag on a straight road. Although, this behavior could be because of the performance of my hardware, which in this case is a GeForce GTX 960M with 2GB of video memory.
@@ -210,11 +206,6 @@ and for the right camera next:
 
 
 ### Creation of the Training Set & Training Process
-
-[//]: # (The final step was to run the simulator to see how well the car was driving around track one. )
-[//]: # (The car drove well up to the second curve (the one after the bridge) where it crashed. I thought that this could happened because most time of the training was driving straight and only a few seconds of left and right turning.)
-
-[//]: # (At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.)
 
 To capture good driving behavior, I first used the original data provided, that consists of driving on track 1 using center lane driving.
 
