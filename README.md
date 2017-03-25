@@ -30,12 +30,12 @@ focusing on better training methods or trying out more preprocessing and robust 
 [generated_img_R]: ./analysis/augmented_R.png
 
 ## Rubric Points
-###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
+### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
 
 ---
-###Files Submitted & Code Quality
+### Files Submitted & Code Quality
 
-####1. Submission includes all required files and can be used to run the simulator in autonomous mode
+#### 1. Submission includes all required files and can be used to run the simulator in autonomous mode
 
 My project includes the following files:
 * train_model.py containing the script to create and train the model (analog to model.py in the rubric)
@@ -48,7 +48,7 @@ My project includes the following files:
 * original_model.h5 containing a trained convolution neural network only trained with the original data set
 * writeup_report.md summarizing the results
 
-####2. Submission includes functional code
+#### 2. Submission includes functional code
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
 ```sh
 python drive.py model.h5
@@ -60,13 +60,13 @@ or
 python drive.py model_original.h5
 ```
 
-####3. Submission code is usable and readable
+#### 3. Submission code is usable and readable
 
 The train_model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
-###Model Architecture
+### Model Architecture
 
-####1. An appropriate model architecture has been employed
+#### 1. An appropriate model architecture has been employed
 
 My model consists of a convolution neural network with 3x3 and 5x5 filter sizes and depths between 3 and 128 (models.py, lines 32-86)
 The model includes ELU layers to introduce nonlinearity and make transition between angles smoother, as the activation function is continuous (in contrast with RELU activation). 
@@ -78,7 +78,7 @@ The resulting cropped and resized image can be seen in the following figure. The
 
 ![Preprocessing][preprocessing]
  
-####2. Attempts to reduce overfitting in the model
+#### 2. Attempts to reduce overfitting in the model
 
 The model contains dropout layers in order to reduce overfitting (models.py lines 78, 83). 
 
@@ -87,14 +87,14 @@ Considering that I processed every image randomly, the validation images were di
 At the end, I recorded one lap on track 1 using center lane driving for validation purposes.
 The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track for both known and unknown scenarios.
 
-####3. Model parameter tuning
+#### 3. Model parameter tuning
 
 The model used an Adam optimizer, so the learning rate was not tuned manually (params.py, line 68).
 However, I played a little bit with the number of epochs and the batch size, arriving at the conclusion that 5 epochs and a batch size of 128 was good enough, in terms of the loss results. The loss function used in the training process was the mean squared error, that suits better than other metrics because the output of the model for this application is a single continuous numeric value. I achieved around 0.01-0.02 at the end.
 
 [//]: # (that 3 epochs were enough and that a typical batch size of 128 was may be more or less the same as a batch size of 64, in terms of the loss results. That being said, I used batches of 64 images, to reduce GPU and memory usage. In addition, a low size for the batch provides better generalization of the model.)
 
-####4. Appropriate training data
+#### 4. Appropriate training data
 
 Training data was chosen to keep the vehicle driving on the road. 
 [//]: # (I used a combination of center lane driving, recovering from the left and right sides of the road.)
@@ -104,7 +104,7 @@ For the future, it would be great to keep training the car with straight driving
 
 For details about how I created the training data, see the sections "Analysis and augmentation of the training data" and "Creation of the Training Set & Training Process". 
 
-####3. Solution Design Approach
+#### 5. Solution Design Approach
 
 The overall strategy for deriving a model architecture was to improve a simple model progressively.
 
@@ -125,7 +125,7 @@ After that, I duplicate the convolutional operations within each layer and added
 Furthermore, I added an additional layer of convolution with 128 3x3 filter.
 
 
-####6. Final Model Architecture
+#### 6. Final Model Architecture
 
 The final model architecture (models.py lines 32-86) consisted of a convolution neural network with the following layers and layer sizes:
 
